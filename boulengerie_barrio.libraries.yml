@@ -1,0 +1,18 @@
+# boulengerie_barrio.libraries.yml
+
+global-styling:
+  version: 0.17
+  css:
+    theme:
+      css/style.min.css: {}
+  js:
+    js/custom.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - boulengerie_barrio/bootstrap
+
+bootstrap:
+  js:
+    js/popper.min.js: { weight: -20 }
+    js/bootstrap.min.js: { weight: -19 }

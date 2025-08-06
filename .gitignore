@@ -1,0 +1,35 @@
+# Cache Sass / Fichiers temporaires
+.sass-cache/
+.sass-lint-cache/
+
+# Dépendances Node.js (si vous utilisez NPM/Yarn pour la compilation Sass)
+# Ce dossier contient toutes les bibliothèques téléchargées par npm ou yarn.
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnp.cjs
+.pnp.loader.cjs
+
+# Fichiers générés par des outils de build (ex: Webpack, Gulp, etc.)
+# Si vous avez un dossier "dist" ou "build" pour vos assets finaux
+# build/
+# dist/
+
+# Fichiers spécifiques à l'IDE et au système d'exploitation
+.DS_Store             # macOS
+Thumbs.db             # Windows
+.idea/                # PHPStorm / IntelliJ
+.vscode/              # VS Code
+*.sublime-project     # Sublime Text
+*.sublime-workspace   # Sublime Text
+*.bak                 # Fichiers de sauvegarde
+*~                    # Fichiers de sauvegarde d'Emacs/Vim
+*.swp                 # Fichiers swap de Vim
+*.swo                 # Fichiers swap de Vim
+*.log                 # Fichiers de log génériques
+.env                  # Fichiers d'environnement local (si vous en utilisez)
+.env.*                # Tous les fichiers .env variants
+
+# Fichiers de configuration spécifiques à votre environnement local (si applicable)
+# Si vous avez des configurations de build ou des fichiers que vous ne voulez pas partager
+# my-build-config.json

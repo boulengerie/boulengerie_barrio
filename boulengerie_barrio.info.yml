@@ -1,0 +1,25 @@
+# boulengerie_barrio.info.yml
+
+name: 'Boulengerie Barrio'
+type: theme
+description: 'SASS starter kit for a Bootstrap Barrio SubTheme.'
+# version: VERSION
+core_version_requirement: ^9 || ^10 || ^11
+base theme: bootstrap_barrio
+
+libraries:
+  - 'boulengerie_barrio/global-styling'
+
+regions:
+  header: Header
+  primary_menu: 'Primary menu'
+  highlighted: Highlighted
+  breadcrumb: Breadcrumb
+  content: Content
+  footer: Footer
+  footer_bottom: 'Footer fifth'
+
+# Information added by Drupal.org packaging script on 2025-06-10
+version: '5.0.12'
+project: 'boulengerie_barrio'
+datestamp: 1749521567

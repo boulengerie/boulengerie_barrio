@@ -1,0 +1,66 @@
+<?php
+// boulengerie_barrio.theme
+
+/**
+ * @file
+ * Functions to support theming in the Boulengerie Barrio theme.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for all templates.
+ *
+ * THIS IS THE MISSING ENGINE.
+ * It tells your sub-theme to run all the parent theme's preprocessing functions,
+ * which injects the necessary Bootstrap classes into menus, fields, forms, etc.
+ */
+function boulengerie_barrio_preprocess(&$variables, $hook) {
+  if (function_exists('bootstrap_barrio_preprocess')) {
+    bootstrap_barrio_preprocess($variables, $hook);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ * This is good practice to ensure form alterations are also inherited.
+ */
+function boulengerie_barrio_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (function_exists('bootstrap_barrio_form_alter')) {
+    bootstrap_barrio_form_alter($form, $form_state, $form_id);
+  }
+}
+
+/**
+ * Implements hook_form_system_theme_settings_alter() for settings form.
+ *
+ * This is YOUR existing function. We keep it because it's useful for
+ * customizing the theme settings page.
+ */
+function boulengerie_barrio_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
+  $form['components']['navbar']['bootstrap_barrio_navbar_top_background']['#options'] = [
+    'bg-primary' => t('Primary'),
+    'bg-secondary' => t('Secondary'),
+    'bg-light' => t('Light'),
+    'bg-dark' => t('Dark'),
+    'bg-white' => t('White'),
+    'bg-transparent' => t('Transparent'),
+  ];
+  $form['components']['navbar']['bootstrap_barrio_navbar_background']['#options'] = [
+    'bg-primary' => t('Primary'),
+    'bg-secondary' => t('Secondary'),
+    'bg-light' => t('Light'),
+    'bg-dark' => t('Dark'),
+    'bg-white' => t('White'),
+    'bg-transparent' => t('Transparent'),
+  ];
+}
+
+/**
+ * Overrides bootstrap_barrio_form_node_form_alter().
+ * This function intentionally removes the custom '#theme' hook to allow
+ * the form to be rendered based on the field weights defined in the UI.
+ */
+function boulengerie_barrio_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  // Do nothing.
+}

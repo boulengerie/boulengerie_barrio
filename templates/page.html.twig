@@ -1,0 +1,58 @@
+{# page.html.twig #}
+{% extends "@bootstrap_barrio/layout/page.html.twig" %}
+
+{# The 'head' block contains the navbar/header. Keep its container logic. #}
+{% block head %}
+<nav{{ navbar_attributes }}>
+    {% if container_navbar %}
+    <div class="container"> {# This div applies the container styling to your header #}
+        {% endif %}
+        {{ page.header }}
+        {% if page.primary_menu or page.header_form %}
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#CollapsingNavbar" aria-controls="CollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse justify-content-end" id="CollapsingNavbar">
+            {{ page.primary_menu }}
+            {% if page.header_form %}
+            <div class="form-inline navbar-form float-right">
+                {{ page.header_form }}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if container_navbar %}
+    </div>
+    {% endif %}
+</nav>
+{% endblock %}
+
+
+{% block content %}
+{#
+    For a minimalistic blog where you want a single, narrow, centered column for content,
+    you can remove Bootstrap Barrio's default `row` and `col` wrapper around the <main> element.
+    Instead, apply the 'container' class directly to the <main> tag.
+
+    This avoids the "double container" issue and simplifies the layout.
+    The `id="content"` and `role="main"` attributes are standard and should be kept.
+#}
+<main class="main-content container" id="content" role="main">
+    <a href="#main-content" id="main-content" tabindex="-1"></a> {# Anchor for "Skip to main content" #}
+    {{ page.content }} {# This renders your actual page content #}
+</main>
+{% endblock %}
+
+{% block footer %}
+{# Keep your footer block as is, it uses a container #}
+<div class="{{ container }}">
+    {% if page.footer %}
+    <div class="site-footer__top clearfix">
+        {{ page.footer }}
+    </div>
+    {% endif %}
+    {% if page.footer_bottom %}
+    <div class="site-footer__bottom">
+        {{ page.footer_bottom }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

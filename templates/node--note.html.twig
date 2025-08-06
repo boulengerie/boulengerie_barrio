@@ -1,0 +1,32 @@
+{# node--note.html.twig #}
+{{ attach_library('bootstrap_barrio/node') }}
+
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'clearfix',
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+
+  <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
+      {{ content.body }}
+
+      <p class="note-meta">
+        <span class="meta-date">{{ node.getCreatedTime|format_date('custom', 'j/n/y') }}</span>
+        {# <span>{{ node.field_categorie.entity.label }}</span> #}
+      </p>
+
+      {{ content.links }}
+
+      {{ content.field_commentaires }}
+
+      {# {{ content|without('body', 'comment', 'links', 'field_categorie.') }} #}
+  </div>
+
+</article>
