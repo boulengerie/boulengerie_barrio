@@ -25,12 +25,12 @@
   <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
 
       {% if view_mode == 'full' %}
-        {% if processed_summary_render is not empty %}
+        {% if processed_summary_render['#text'] is not empty %}
           <div class="node-summary-introduction">
             {{ processed_summary_render }}
           </div>
-          {% if processed_body_render is not empty %}
-            <hr id="summary-separator-anchor" class="summary-separator" />
+          {% if processed_body_render['#text'] is not empty %} 
+          <p id="summary-separator-anchor" class="summary-separator" />----- SUITE -----</p>
           {% endif %}
         {% endif %}
         <div class="node-body-content">
@@ -55,24 +55,10 @@
         </span>
       </p>
 
-    <div class="node-links">
-        {% if view_mode == 'full' %}
-          {# Affiche le champ de commentaires (liste des commentaires + formulaire si connecté) #}
+      <div class="node-links">
+          {% if view_mode == 'full' %}
           {{ content.field_commentaires }}
-
-          {# Vérifie si l'utilisateur est anonyme ET n'a PAS la permission de poster des commentaires #}
-          {% if user.isAnonymous() and not user.hasPermission('post comments') %}
-            <p class="comment-login-prompt">
-              {{ 'Vous devez être connecté pour laisser un commentaire. ' | t }}
-              {# Utiliser path('<current>') pour obtenir un chemin simple pour la destination #}
-              <a href="{{ url('user.login', {}, {'query': {'destination': path('<current>')}}) }}">{{ 'Connectez-vous'|t }}</a>
-              {{ ' ou ' | t }}
-              <a href="{{ url('user.register', {}, {'query': {'destination': path('<current>')}}) }}">{{ 'créez un compte'|t }}</a>.
-            </p>
           {% endif %}
-        {% endif %}
       </div>
-
   </div>
-
 </article>

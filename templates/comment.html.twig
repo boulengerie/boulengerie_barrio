@@ -1,3 +1,4 @@
+{# comment.html.twig #}
 {{ attach_library('bootstrap_barrio/comments') }}
 {%
   set classes = [
@@ -11,7 +12,6 @@
   ]
 %}
 <article role="article"{{ attributes.addClass(classes)|without('role') }}>
-
   <div{{ content_attributes.addClass(['comment__content', 'clearfix'])|without('col-sm-9', 'card') }}>
     <p class="comment-line">
       <strong>{{ author }}</strong>{{ content.comment_body }}

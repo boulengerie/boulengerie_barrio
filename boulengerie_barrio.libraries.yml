@@ -1,7 +1,7 @@
 # boulengerie_barrio.libraries.yml
 
 global-styling:
-  version: 0.22
+  version: 0.24
   css:
     theme:
       css/style.min.css: {}

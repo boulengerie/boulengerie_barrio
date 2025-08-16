@@ -50,7 +50,6 @@ a:hover,
 a:focus {
   text-decoration: underline; 
   text-decoration-style: solid;
-  // color: black;
 }
 
 // HEADER
@@ -92,6 +91,9 @@ figure figcaption {
   text-align: center;
 }
 
+.summary-separator {
+  color: $text-muted;
+}
 
 .note-meta {
   color: $text-muted;
@@ -255,6 +257,11 @@ figure figcaption {
 footer {
   margin-top: 2em;
   background-color: $text-dark;
+  color: white;
+
+  a {
+    color: white !important;
+  }
 }
 
 .site-footer__bottom {

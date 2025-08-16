@@ -42,19 +42,24 @@
   ]
 %}
 <section{{ attributes.addClass(classes) }}>
-  {# {% if comments and not label_hidden %} #}
-    {# {{ title_prefix }} #}
-    {# <p{{ title_attributes.addClass(title_classes) }}>{{ label }}</p> #}
-    {# {{ title_suffix }} #}
-  {# {% endif %} #}
-
+  {# On affiche toujours les commentaires existants #}
   {{ comments }}
 
   {% if comment_form %}
     <p class='title comment-form__title'>
-    --<br>
-    {{ 'Add new comment'|t }}</p>
+      --<br>
+      {{ 'Add new comment'|t }}
+    </p>
     {{ comment_form }}
+  {% else %}
+    {% if user.isAnonymous() and not user.hasPermission('post comments') %}
+      <p class="comment-login-prompt">
+        {{ 'Vous devez être connecté pour laisser un commentaire. ' | t }}
+        <a href="{{ url('user.login', {}, {'query': {'destination': path('<current>')}}) }}">{{ 'Connectez-vous'|t }}</a>
+        {{ ' ou ' | t }}
+        <a href="{{ url('user.register', {}, {'query': {'destination': path('<current>')}}) }}">{{ 'créez un compte'|t }}</a>.
+      </p>
+    {% endif %}
   {% endif %}
 
 </section>
