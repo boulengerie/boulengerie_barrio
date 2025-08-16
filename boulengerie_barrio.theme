@@ -7,13 +7,12 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+// Plus besoin de ces deux 'use' statements si on utilise l'approche render array:
+// use Drupal\filter\Render\FilteredMarkup;
+// use Drupal\Component\Render\MarkupInterface;
 
 /**
  * Implements hook_preprocess_HOOK() for all templates.
- *
- * THIS IS THE MISSING ENGINE.
- * It tells your sub-theme to run all the parent theme's preprocessing functions,
- * which injects the necessary Bootstrap classes into menus, fields, forms, etc.
  */
 function boulengerie_barrio_preprocess(&$variables, $hook) {
   if (function_exists('bootstrap_barrio_preprocess')) {
@@ -23,7 +22,6 @@ function boulengerie_barrio_preprocess(&$variables, $hook) {
 
 /**
  * Implements hook_form_alter().
- * This is good practice to ensure form alterations are also inherited.
  */
 function boulengerie_barrio_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (function_exists('bootstrap_barrio_form_alter')) {
@@ -33,9 +31,6 @@ function boulengerie_barrio_form_alter(&$form, FormStateInterface $form_state, $
 
 /**
  * Implements hook_form_system_theme_settings_alter() for settings form.
- *
- * This is YOUR existing function. We keep it because it's useful for
- * customizing the theme settings page.
  */
 function boulengerie_barrio_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
   $form['components']['navbar']['bootstrap_barrio_navbar_top_background']['#options'] = [
@@ -58,9 +53,56 @@ function boulengerie_barrio_form_system_theme_settings_alter(&$form, FormStateIn
 
 /**
  * Overrides bootstrap_barrio_form_node_form_alter().
- * This function intentionally removes the custom '#theme' hook to allow
- * the form to be rendered based on the field weights defined in the UI.
  */
 function boulengerie_barrio_form_node_form_alter(&$form, FormStateInterface $form_state) {
   // Do nothing.
+}
+
+function boulengerie_barrio_preprocess_page_title(&$variables) {
+  $current_route = \Drupal::routeMatch();
+
+  if ($current_route->getRouteName() === 'entity.taxonomy_term.canonical') {
+
+    if (is_array($variables['title']) && isset($variables['title']['#markup'])) {
+      $variables['title']['#markup'] = '#' . $variables['title']['#markup'];
+    }
+    elseif (is_string($variables['title'])) {
+      $variables['title'] = '#' . $variables['title'];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function boulengerie_barrio_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+
+  // Cible uniquement le type de contenu 'note' et le mode d'affichage 'full'.
+  if ($node->bundle() == 'note' && $variables['view_mode'] == 'full') {
+    // Vérifie si le champ 'body' existe et n'est pas vide.
+    if (!$node->body->isEmpty()) {
+      $summary = $node->body->summary;
+      $value = $node->body->value;
+      $format = $node->body->format; // Récupère le format de texte utilisé (ex: 'full_html').
+
+      // Crée des tableaux de rendu de type 'processed_text'.
+      // Ces tableaux seront ensuite rendus par Twig, ce qui déclenchera
+      // l'application des filtres de texte de Drupal, y compris celui des médias.
+      $variables['processed_summary_render'] = [
+        '#type' => 'processed_text',
+        '#text' => $summary,
+        '#format' => $format,
+      ];
+      $variables['processed_body_render'] = [
+        '#type' => 'processed_text',
+        '#text' => $value,
+        '#format' => $format,
+      ];
+    } else {
+      // Si le champ body est vide, assurez-vous que les variables sont vides.
+      $variables['processed_summary_render'] = []; // Un tableau vide pour un élément de rendu
+      $variables['processed_body_render'] = [];
+    }
+  }
 }

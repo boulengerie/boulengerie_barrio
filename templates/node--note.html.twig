@@ -14,19 +14,65 @@
 %}
 <article{{ attributes.addClass(classes) }}>
 
+  {{ title_prefix }}
+  {% if not page %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url('entity.node.canonical', {'node': node.id}) }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+
   <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
-      {{ content.body }}
+
+      {% if view_mode == 'full' %}
+        {% if processed_summary_render is not empty %}
+          <div class="node-summary-introduction">
+            {{ processed_summary_render }}
+          </div>
+          {% if processed_body_render is not empty %}
+            <hr id="summary-separator-anchor" class="summary-separator" />
+          {% endif %}
+        {% endif %}
+        <div class="node-body-content">
+          {{ processed_body_render }}
+        </div>
+      {% elseif view_mode == 'teaser' %}
+        {{ content.body }}
+
+        {% if node.body.summary is not empty %}
+          <p class="read-more-link">
+            <a href="{{ url('entity.node.canonical', {'node': node.id}, {'fragment': 'summary-separator-anchor'}) }}">{{ 'Lire la suite'|t }}</a>
+          </p>
+        {% endif %}
+      {% else %}
+        {{ content.body }}
+      {% endif %}
 
       <p class="note-meta">
         <span class="meta-date">{{ node.getCreatedTime|format_date('custom', 'j/n/y') }}</span>
-        {# <span>{{ node.field_categorie.entity.label }}</span> #}
+        <span class="meta-tags">
+          {{ content.field_tags }}
+        </span>
       </p>
 
-      {{ content.links }}
+    <div class="node-links">
+        {% if view_mode == 'full' %}
+          {# Affiche le champ de commentaires (liste des commentaires + formulaire si connecté) #}
+          {{ content.field_commentaires }}
 
-      {{ content.field_commentaires }}
+          {# Vérifie si l'utilisateur est anonyme ET n'a PAS la permission de poster des commentaires #}
+          {% if user.isAnonymous() and not user.hasPermission('post comments') %}
+            <p class="comment-login-prompt">
+              {{ 'Vous devez être connecté pour laisser un commentaire. ' | t }}
+              {# Utiliser path('<current>') pour obtenir un chemin simple pour la destination #}
+              <a href="{{ url('user.login', {}, {'query': {'destination': path('<current>')}}) }}">{{ 'Connectez-vous'|t }}</a>
+              {{ ' ou ' | t }}
+              <a href="{{ url('user.register', {}, {'query': {'destination': path('<current>')}}) }}">{{ 'créez un compte'|t }}</a>.
+            </p>
+          {% endif %}
+        {% endif %}
+      </div>
 
-      {# {{ content|without('body', 'comment', 'links', 'field_categorie.') }} #}
   </div>
 
 </article>
